@@ -1,14 +1,18 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useQuery } from "@tanstack/react-query";
 import EmailSignupForm from "@/components/email-signup-form";
+import { LocalStorageService } from "@/lib/localStorage";
 
 export default function Home() {
-  const { data: subscriberData } = useQuery<{ count: number }>({
-    queryKey: ["/api/subscribers/count"],
-    staleTime: 60000, // 1 minute
-  });
+  const [subscriberCount, setSubscriberCount] = useState(0);
 
-  const subscriberCount = subscriberData?.count ?? 0;
+  useEffect(() => {
+    setSubscriberCount(LocalStorageService.getSubscriberCount());
+  }, []);
+
+  const handleSubscriberAdded = () => {
+    setSubscriberCount(LocalStorageService.getSubscriberCount());
+  };
 
   return (
     <div className="min-h-screen bg-white text-black font-inter antialiased overflow-x-hidden">
@@ -53,7 +57,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
           >
-            <EmailSignupForm subscriberCount={subscriberCount} />
+            <EmailSignupForm subscriberCount={subscriberCount} onSubscriberAdded={handleSubscriberAdded} />
           </motion.div>
 
 

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Download, Mail, Users, Calendar, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import AdminLogin from "@/components/admin-login";
+import { LocalStorageService } from "@/lib/localStorage";
 import type { EmailSubscription } from "@shared/schema";
 
 export default function Admin() {
@@ -38,13 +38,17 @@ export default function Admin() {
     setIsLoggedIn(false);
   };
 
-  const { data: subscribersData, isLoading } = useQuery<{ subscribers: EmailSubscription[] }>({
-    queryKey: ["/api/admin/subscribers"],
-    staleTime: 30000, // 30 seconds
-    enabled: isLoggedIn, // Only fetch when logged in
-  });
+  const [subscribers, setSubscribers] = useState<EmailSubscription[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const subscribers = subscribersData?.subscribers || [];
+  useEffect(() => {
+    if (isLoggedIn) {
+      setIsLoading(true);
+      const subs = LocalStorageService.getSubscribers();
+      setSubscribers(subs);
+      setIsLoading(false);
+    }
+  }, [isLoggedIn]);
 
   if (!isLoggedIn) {
     return <AdminLogin onLoginSuccess={() => setIsLoggedIn(true)} />;
@@ -53,8 +57,8 @@ export default function Admin() {
   const handleExportCSV = async () => {
     setIsExporting(true);
     try {
-      const response = await fetch("/api/admin/subscribers/export");
-      const blob = await response.blob();
+      const csvContent = LocalStorageService.generateCSV();
+      const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -81,7 +85,7 @@ export default function Admin() {
   };
 
   const generateEmailList = () => {
-    return subscribers.map(sub => sub.email).join(", ");
+    return subscribers.map((sub: EmailSubscription) => sub.email).join(", ");
   };
 
   const copyEmailList = () => {

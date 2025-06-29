@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { z } from "zod";
 import { Lock, User } from "lucide-react";
-import { apiRequest } from "@/lib/queryClient";
+import { LocalStorageService } from "@/lib/localStorage";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,13 +33,15 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
     },
   });
 
-  const loginMutation = useMutation({
-    mutationFn: async (data: LoginFormData) => {
-      const response = await apiRequest("POST", "/api/admin/login", data);
-      return response.json();
-    },
-    onSuccess: (data) => {
-      if (data.success) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    
+    try {
+      const isValid = LocalStorageService.checkAdminLogin(data.username, data.password);
+      
+      if (isValid) {
         // Store login status locally
         localStorage.setItem("adminLoggedIn", "true");
         localStorage.setItem("adminLoginTime", Date.now().toString());
@@ -49,19 +50,22 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
           title: "Login successful",
           description: "Welcome to the admin dashboard",
         });
+      } else {
+        toast({
+          title: "Login failed",
+          description: "Invalid username or password",
+          variant: "destructive",
+        });
       }
-    },
-    onError: (error: any) => {
+    } catch (error) {
       toast({
         title: "Login failed",
-        description: "Invalid username or password",
+        description: "An error occurred during login",
         variant: "destructive",
       });
-    },
-  });
-
-  const onSubmit = (data: LoginFormData) => {
-    loginMutation.mutate(data);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -99,7 +103,7 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
                             placeholder="Enter username"
                             className="pl-10"
                             {...field}
-                            disabled={loginMutation.isPending}
+                            disabled={isLoading}
                           />
                         </div>
                       </FormControl>
@@ -122,7 +126,7 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
                             placeholder="Enter password"
                             className="pl-10"
                             {...field}
-                            disabled={loginMutation.isPending}
+                            disabled={isLoading}
                           />
                         </div>
                       </FormControl>
@@ -133,10 +137,10 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
                 
                 <Button 
                   type="submit"
-                  disabled={loginMutation.isPending}
+                  disabled={isLoading}
                   className="w-full"
                 >
-                  {loginMutation.isPending ? "Signing in..." : "Sign In"}
+                  {isLoading ? "Signing in..." : "Sign In"}
                 </Button>
               </form>
             </Form>

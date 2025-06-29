@@ -5,7 +5,9 @@
 - Vercel account (free tier available)
 - Your project files ready
 
-## Step 1: Prepare Your Project
+## Step 1: Prepare Your Project for Static Deployment
+
+Your "Coming Soon" website is now optimized for static deployment with local storage for data persistence.
 
 1. **Download your project files** from Replit:
    - Click the three dots menu in Replit
@@ -48,32 +50,30 @@ git push -u origin main
    - Click "Import"
 
 4. **Configure build settings**:
-   - **Framework Preset**: Other
-   - **Build Command**: `npm run build`
+   - **Framework Preset**: Vite
+   - **Build Command**: `vite build --outDir dist`
    - **Output Directory**: `dist`
    - **Install Command**: `npm install`
 
-5. **Environment Variables** (if needed later):
-   - You can add these in Vercel dashboard > Settings > Environment Variables
-
-6. **Click "Deploy"**
+5. **Click "Deploy"**
 
 ## Step 5: Vercel Will Build Your Site
 
 - Vercel will automatically:
   - Install dependencies
-  - Build your React frontend
+  - Build your React frontend as a static site
   - Deploy to a live URL
   - Give you a URL like: `https://my-coming-soon-website.vercel.app`
 
 ## Step 6: Test Your Deployment
 
 1. **Visit your live URL**
-2. **Test the email signup form**
+2. **Test the email signup form** - data saves to browser's local storage
 3. **Check the admin panel** at `/admin`
 4. **Verify login works** with credentials:
    - Username: `Lekhan`
    - Password: `L2009@khan!`
+5. **Test CSV export** for downloading subscriber emails
 
 ## Step 7: Custom Domain (Optional)
 
@@ -81,23 +81,35 @@ git push -u origin main
 2. **Add your custom domain** (like `yoursite.com`)
 3. **Update DNS settings** as instructed by Vercel
 
-## Important Notes
+## How Data Storage Works
 
-- **Data Storage**: Currently uses in-memory storage, so subscriber data resets on each deployment
-- **Admin Access**: Login credentials work with local browser storage
-- **Email Export**: Download CSV functionality works for getting subscriber emails
-- **No Database**: Simple setup without external database requirements
+- **Subscriber Data**: Stored in browser's local storage (persists between visits)
+- **Admin Access**: Login sessions stored locally (expires after 24 hours)
+- **CSV Export**: Generates file from local storage data
+- **Cross-Device**: Each device/browser has its own data storage
 
-## If You Need Persistent Data Storage Later
+## Managing Subscribers
 
-1. **Add a database** (like Vercel Postgres or Supabase)
-2. **Update environment variables** in Vercel
-3. **Redeploy** the project
+1. **View all subscribers**: Admin panel shows all signups
+2. **Export email list**: Download CSV file or copy all emails to clipboard
+3. **Send notifications**: Copy emails and paste into your email client's BCC field
+
+## If You Need Centralized Data Storage Later
+
+1. **Add a database** service (like Supabase or Vercel Postgres)
+2. **Update the code** to use API calls instead of local storage
+3. **Add environment variables** in Vercel dashboard
+4. **Redeploy** the project
 
 ## Troubleshooting
 
-- **Build fails**: Check the build logs in Vercel dashboard
-- **404 errors**: Ensure all files uploaded correctly to GitHub
+- **Build fails**: Check build logs in Vercel dashboard, ensure all dependencies are correct
+- **404 errors**: Verify all files uploaded to GitHub correctly
 - **Admin login not working**: Clear browser storage and try again
+- **Data not saving**: Check if JavaScript is enabled and local storage is available
 
-Your "Coming Soon" website will be live and ready to collect email signups!
+## Build Error Fix
+
+If you encounter build errors, the issue was resolved by converting to a static-only deployment using local storage instead of server-side functionality.
+
+Your "Coming Soon" website will be live as a fast, static site ready to collect email signups!
