@@ -49,6 +49,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin endpoint to get all subscribers
+  app.get("/api/admin/subscribers", async (req, res) => {
+    try {
+      const subscriptions = await storage.getAllEmailSubscriptions();
+      res.json({ subscribers: subscriptions });
+    } catch (error) {
+      console.error("Error getting subscribers:", error);
+      res.status(500).json({ message: "Unable to get subscribers" });
+    }
+  });
+
+  // Admin endpoint to export subscribers as CSV
+  app.get("/api/admin/subscribers/export", async (req, res) => {
+    try {
+      const subscriptions = await storage.getAllEmailSubscriptions();
+      
+      // Generate CSV content
+      const csvHeader = "Email,Subscribed Date\n";
+      const csvRows = subscriptions.map(sub => 
+        `${sub.email},${sub.subscribedAt.toISOString().split('T')[0]}`
+      ).join('\n');
+      
+      const csvContent = csvHeader + csvRows;
+      
+      // Set headers for file download
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename="subscribers.csv"');
+      res.send(csvContent);
+    } catch (error) {
+      console.error("Error exporting subscribers:", error);
+      res.status(500).json({ message: "Unable to export subscribers" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

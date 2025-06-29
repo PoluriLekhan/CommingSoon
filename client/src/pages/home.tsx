@@ -70,6 +70,12 @@ export default function Home() {
           <p className="text-sm text-gray-400 font-inter">
             © 2024. All rights reserved.
           </p>
+          <a 
+            href="/admin" 
+            className="text-xs text-gray-300 hover:text-gray-500 transition-colors duration-200 mt-2 block"
+          >
+            Admin
+          </a>
         </motion.footer>
 
       </main>
