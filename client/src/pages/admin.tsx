@@ -10,6 +10,7 @@ import type { EmailSubscription } from "@shared/schema";
 
 export default function Admin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   useEffect(() => {
     // Check if user is logged in
@@ -37,17 +38,17 @@ export default function Admin() {
     setIsLoggedIn(false);
   };
 
-  if (!isLoggedIn) {
-    return <AdminLogin onLoginSuccess={() => setIsLoggedIn(true)} />;
-  }
-  const [isExporting, setIsExporting] = useState(false);
-
   const { data: subscribersData, isLoading } = useQuery<{ subscribers: EmailSubscription[] }>({
     queryKey: ["/api/admin/subscribers"],
     staleTime: 30000, // 30 seconds
+    enabled: isLoggedIn, // Only fetch when logged in
   });
 
   const subscribers = subscribersData?.subscribers || [];
+
+  if (!isLoggedIn) {
+    return <AdminLogin onLoginSuccess={() => setIsLoggedIn(true)} />;
+  }
 
   const handleExportCSV = async () => {
     setIsExporting(true);
