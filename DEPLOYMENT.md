@@ -50,9 +50,9 @@ git push -u origin main
    - Click "Import"
 
 4. **Configure build settings**:
-   - **Framework Preset**: Vite
-   - **Build Command**: `vite build --outDir dist`
-   - **Output Directory**: `dist`
+   - **Framework Preset**: Other
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist/public`
    - **Install Command**: `npm install`
 
 5. **Click "Deploy"**

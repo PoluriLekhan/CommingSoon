@@ -95,6 +95,11 @@ This is a full-stack TypeScript application featuring a premium "Coming Soon" la
 ```
 Changelog:
 - June 29, 2025. Initial setup
+- June 29, 2025. Fixed Vercel deployment configuration
+  - Resolved React hooks errors in admin component
+  - Updated vercel.json with correct build command and output directory
+  - Created comprehensive deployment guide in DEPLOYMENT.md
+  - Configured static deployment using local storage for data persistence
 ```
 
 ## User Preferences

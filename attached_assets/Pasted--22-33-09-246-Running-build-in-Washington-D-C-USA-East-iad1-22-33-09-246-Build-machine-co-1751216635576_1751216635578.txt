@@ -1,0 +1,46 @@
+[22:33:09.246] Running build in Washington, D.C., USA (East) – iad1
+[22:33:09.246] Build machine configuration: 2 cores, 8 GB
+[22:33:09.263] Cloning github.com/PoluriLekhan/CommingSoon (Branch: main, Commit: 2f42893)
+[22:33:09.442] Previous build caches not available
+[22:33:09.529] Cloning completed: 266.000ms
+[22:33:09.831] Running "vercel build"
+[22:33:10.267] Vercel CLI 43.3.0
+[22:33:10.835] Running "install" command: `npm install`...
+[22:33:15.492] npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+[22:33:15.506] npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+[22:33:21.070] 
+[22:33:21.071] added 498 packages, and audited 499 packages in 10s
+[22:33:21.072] 
+[22:33:21.072] 65 packages are looking for funding
+[22:33:21.072]   run `npm fund` for details
+[22:33:21.106] 
+[22:33:21.106] 9 vulnerabilities (1 low, 8 moderate)
+[22:33:21.107] 
+[22:33:21.107] To address issues that do not require attention, run:
+[22:33:21.107]   npm audit fix
+[22:33:21.107] 
+[22:33:21.107] To address all issues (including breaking changes), run:
+[22:33:21.107]   npm audit fix --force
+[22:33:21.107] 
+[22:33:21.108] Run `npm audit` for details.
+[22:33:21.499] [36mvite v5.4.19 [32mbuilding for production...[36m[39m
+[22:33:21.549] transforming...
+[22:33:21.835] Browserslist: browsers data (caniuse-lite) is 8 months old. Please run:
+[22:33:21.836]   npx update-browserslist-db@latest
+[22:33:21.837]   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[22:33:26.785] [32m✓[39m 2116 modules transformed.
+[22:33:27.152] rendering chunks...
+[22:33:27.159] computing gzip size...
+[22:33:27.277] [2mdist/[22m[32mindex.html                 [39m[1m[2m  1.37 kB[22m[1m[22m[2m │ gzip:   0.63 kB[22m
+[22:33:27.278] [2mdist/[22m[2massets/[22m[35mindex-DNBhC2KQ.css  [39m[1m[2m 62.60 kB[22m[1m[22m[2m │ gzip:  11.26 kB[22m
+[22:33:27.282] [2mdist/[22m[2massets/[22m[36mindex-mDRNbvfX.js   [39m[1m[33m516.13 kB[39m[22m[2m │ gzip: 161.30 kB[22m
+[22:33:27.282] [32m✓ built in 5.75s[39m
+[22:33:27.283] [33m
+[22:33:27.283] (!) Some chunks are larger than 500 kB after minification. Consider:
+[22:33:27.283] - Using dynamic import() to code-split the application
+[22:33:27.284] - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+[22:33:27.284] - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[22:33:27.316] Error: No Output Directory named "dist" found after the Build completed. You can configure the Output Directory in your Project Settings.
+[22:33:27.316] Learn More: https://vercel.link/missing-public-directory
+[22:33:27.537] 
+[22:33:30.086] Exiting build container
