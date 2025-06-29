@@ -49,6 +49,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin login endpoint
+  app.post("/api/admin/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      
+      // Check credentials
+      if (username === "Lekhan" && password === "L2009@khan!") {
+        res.json({ success: true, message: "Login successful" });
+      } else {
+        res.status(401).json({ success: false, message: "Invalid credentials" });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ message: "Login failed" });
+    }
+  });
+
   // Admin endpoint to get all subscribers
   app.get("/api/admin/subscribers", async (req, res) => {
     try {

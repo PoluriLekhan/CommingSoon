@@ -1,13 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Download, Mail, Users, Calendar } from "lucide-react";
+import { Download, Mail, Users, Calendar, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import AdminLogin from "@/components/admin-login";
 import type { EmailSubscription } from "@shared/schema";
 
 export default function Admin() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const loginStatus = localStorage.getItem("adminLoggedIn");
+    const loginTime = localStorage.getItem("adminLoginTime");
+    
+    if (loginStatus === "true" && loginTime) {
+      // Check if login is still valid (24 hours)
+      const twentyFourHours = 24 * 60 * 60 * 1000;
+      const isLoginValid = Date.now() - parseInt(loginTime) < twentyFourHours;
+      
+      if (isLoginValid) {
+        setIsLoggedIn(true);
+      } else {
+        // Clear expired login
+        localStorage.removeItem("adminLoggedIn");
+        localStorage.removeItem("adminLoginTime");
+      }
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminLoggedIn");
+    localStorage.removeItem("adminLoginTime");
+    setIsLoggedIn(false);
+  };
+
+  if (!isLoggedIn) {
+    return <AdminLogin onLoginSuccess={() => setIsLoggedIn(true)} />;
+  }
   const [isExporting, setIsExporting] = useState(false);
 
   const { data: subscribersData, isLoading } = useQuery<{ subscribers: EmailSubscription[] }>({
@@ -64,9 +96,19 @@ export default function Admin() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
-            <p className="text-gray-600">Manage your email subscribers and launch notifications</p>
+          <div className="mb-8 flex justify-between items-start">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
+              <p className="text-gray-600">Manage your email subscribers and launch notifications</p>
+            </div>
+            <Button
+              variant="outline"
+              onClick={handleLogout}
+              className="flex items-center gap-2"
+            >
+              <LogOut className="h-4 w-4" />
+              Logout
+            </Button>
           </div>
 
           {/* Stats Cards */}
