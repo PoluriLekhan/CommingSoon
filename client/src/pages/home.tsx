@@ -91,12 +91,6 @@ export default function Home() {
               alt="Minimal luxury design element - geometric forms" 
               className="w-16 h-12 md:w-20 md:h-16 object-cover rounded-lg animate-pulse-slow"
             />
-            <img 
-              src="https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061131_1280.jpg" 
-              alt="Premium material texture with subtle patterns" 
-              className="w-16 h-12 md:w-20 md:h-16 object-cover rounded-lg animate-pulse-slow"
-              style={{ animationDelay: '1s' }}
-            />
           </motion.div>
 
         </div>
