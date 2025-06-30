@@ -75,7 +75,7 @@ export default function Home() {
             © 2025. All rights reserved.
           </p>
           <a 
-            href="admin.tsx"
+            href="/client/src/pages/admin.tsx"
             className="text-xs text-gray-300 hover:text-gray-500 transition-colors duration-200 mt-2 block"
           >
             Admin
