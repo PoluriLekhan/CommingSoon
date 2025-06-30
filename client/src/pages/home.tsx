@@ -72,10 +72,10 @@ export default function Home() {
           transition={{ duration: 1.2, ease: "easeOut", delay: 1.5 }}
         >
           <p className="text-sm text-gray-400 font-inter">
-            © 2024. All rights reserved.
+            © 2025. All rights reserved.
           </p>
           <a 
-            href="/admin" 
+            href="admin.tsx"
             className="text-xs text-gray-300 hover:text-gray-500 transition-colors duration-200 mt-2 block"
           >
             Admin
